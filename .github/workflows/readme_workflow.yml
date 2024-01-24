@@ -35,7 +35,7 @@ jobs:
             echo "" >> AI_generated/README.md
             for file in $(echo "${{ env.PNG_FILES }}"); do
                 echo "### $file" >> AI_generated/README.md
-                echo "![]($file)" >> AI_generated/README.md
+                echo "<img src=\"$file\" width=\"250\">" >> AI_generated/README.md
                 echo "" >> AI_generated/README.md
             done
 

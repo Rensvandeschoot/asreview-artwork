@@ -12,12 +12,13 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
 
       - name: Find PNG files
         id: find-files
         run: |
-            echo "::set-output name=files::$(find AI_generated -name '*.png')"
+            png_files=$(find AI_generated -name '*.png')
+            echo "files=$png_files" >> $GITHUB_ENV
 
       - name: Update README
         run: |
@@ -26,7 +27,7 @@ jobs:
             echo "The following PNG files are available:" >> AI_generated/README.md
             echo "" >> AI_generated/README.md
             echo "\`\`\`" >> AI_generated/README.md
-            echo "${{ steps.find-files.outputs.files }}" >> AI_generated/README.md
+            cat $GITHUB_ENV | grep files= | cut -d '=' -f2- >> AI_generated/README.md
             echo "\`\`\`" >> AI_generated/README.md
 
       - name: Commit and push changes

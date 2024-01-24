@@ -3,5 +3,6 @@
 The following PNG files are available:
 
 ```
-AI_generated/PNG/ELAS_old-school.png
+PNG/ELAS_old-school.png
+PNG/ELAS_cloud.png
 ```

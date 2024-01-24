@@ -11,16 +11,19 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repository
+      - name: Checkout AI_generated folder
         uses: actions/checkout@v4
         with:
-          fetch-depth: 1
+          sparse-checkout: |
+            AI_generated/
 
       - name: Find PNG files
         id: find-files
         run: |
-            png_files=$(find AI_generated -name '*.png')
-            echo "files=$png_files" >> $GITHUB_ENV
+            png_files=$(find AI_generated -name '*.png' -printf '%P\n')
+            echo "PNG_FILES<<EOF" >> $GITHUB_ENV
+            echo "$png_files" >> $GITHUB_ENV
+            echo "EOF" >> $GITHUB_ENV
 
       - name: Update README
         run: |
@@ -29,7 +32,7 @@ jobs:
             echo "The following PNG files are available:" >> AI_generated/README.md
             echo "" >> AI_generated/README.md
             echo "\`\`\`" >> AI_generated/README.md
-            cat $GITHUB_ENV | grep files= | cut -d '=' -f2- >> AI_generated/README.md
+            echo "${{ env.PNG_FILES }}" >> AI_generated/README.md
             echo "\`\`\`" >> AI_generated/README.md
 
       - name: Commit and push changes
